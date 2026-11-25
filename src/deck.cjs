@@ -24,7 +24,7 @@ const content = (kicker, title, els, id) => slides.push({ layout: 'content', kic
 const cite = (x, y, w, h, src, label, target, o = {}) => ({ t: 'cite', x, y, w, h, src, label, target, ...o });
 
 // 1. Bìa
-slides.push({ layout: 'cover', els: [
+slides.push({ layout: 'cover', id: 'bia', els: [
   rect(0, 0, 16, 720, { fill: C.band, radius: 0 }),
   circle(88, 64, 60, C.white), img(90, 66, 56, 56, 'truong', { round: true }),
   circle(160, 64, 60, C.white), img(162, 66, 56, 56, 'khoa', { round: true }),
@@ -269,12 +269,12 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
 // 10. Phương pháp
 {
   const steps = [
-    ['6.1', 'Nghiên cứu tài liệu', 'Chương trình 2018, Thông tư 22/2021, Công văn 7991, sách giáo khoa và sách giáo viên Vật lí 10.'],
-    ['6.2', 'Xây dựng bộ YCCĐ', 'Mỗi bài gồm các dòng YCCĐ ở ba mức; lấy nguyên văn mục tiêu bài học trong sách giáo viên.'],
-    ['6.3', 'Xây dựng ngân hàng câu', 'Bổ sung câu cho dòng YCCĐ còn thiếu; mỗi câu, mỗi ý “Đúng – Sai” gắn YCCĐ và mức độ.'],
-    ['6.4', 'Phát triển website', 'Phát triển lặp với React, TypeScript, Vite, Supabase, KaTeX; kiểm thử tự động phần tính toán.'],
-    ['6.5', 'Khảo sát, thử nghiệm', 'Khảo sát nhu cầu; thử nghiệm hai giai đoạn với giáo viên; thang SUS, câu hỏi theo TAM, phỏng vấn.'],
-    ['6.6', 'Phân tích dữ liệu', 'Thống kê mô tả; điểm SUS quy về thang 0 – 100; mã hóa ý kiến định tính theo chủ đề.'],
+    ['6.1', 'Nghiên cứu tài liệu', 'Chương trình 2018, Thông tư 22/2021, Công văn 7991, sách giáo khoa và sách giáo viên Vật lí 10; tài liệu về bảng đặc tả, phân loại mức độ nhận thức.'],
+    ['6.2', 'Xây dựng bộ YCCĐ', 'Mỗi bài gồm các dòng YCCĐ ở ba mức; lấy nguyên văn mục tiêu bài học trong sách giáo viên, phần chưa đủ bổ sung từ YCCĐ của chương trình 2018.'],
+    ['6.3', 'Xây dựng ngân hàng câu', 'Sưu tầm, tổng hợp, bổ sung câu cho dòng YCCĐ còn thiếu; mỗi câu (mỗi ý “Đúng – Sai”) gắn YCCĐ và mức độ theo quy tắc ở mục 2.3.'],
+    ['6.4', 'Phát triển website', 'Phát triển lặp: xây từng chức năng, lấy ý kiến giảng viên hướng dẫn, giáo viên rồi điều chỉnh; React, TypeScript, Vite, Supabase, KaTeX.'],
+    ['6.5', 'Khảo sát, thử nghiệm', 'Khảo sát nhu cầu giáo viên; thử nghiệm giai đoạn 1 (chủ đề Năng lượng) và giai đoạn 2; đánh giá bằng SUS, câu hỏi theo TAM, phỏng vấn ngắn.'],
+    ['6.6', 'Phân tích dữ liệu', 'Thống kê mô tả (tần số, tỉ lệ, trung bình, độ lệch chuẩn); điểm SUS quy về thang 0 – 100; ý kiến định tính mã hóa theo chủ đề.'],
   ];
   const cw = (W - 48) / 3, ch = (H - 24) / 2, els = [];
   steps.forEach(([n, h, p], i) => {
@@ -283,7 +283,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       rect(x + 24, y + 24, 60, 30, { fill: i === 3 ? C.gold : C.tint, radius: 15 }),
       text(x + 24, y + 24, 60, 30, n, { size: 15, bold: true, color: i === 3 ? C.dark : C.brown, align: 'center', valign: 'middle' }),
       text(x + 24, y + 70, cw - 48, 32, h, { size: 22, bold: true, color: i === 3 ? C.white : C.text }),
-      text(x + 24, y + 112, cw - 48, 100, p, { size: 17, color: i === 3 ? C.darkMuted : C.muted, lh: 1.45 }));
+      text(x + 24, y + 108, cw - 48, 120, p, { size: 16, color: i === 3 ? C.darkMuted : C.muted, lh: 1.42 }));
   });
   content('06 — PHƯƠNG PHÁP NGHIÊN CỨU', 'Sáu bước thực hiện đề tài', els);
 }
@@ -294,10 +294,11 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
     text(L + 30, TOP + 24, 200, 86, '40', { size: 72, weight: 800, color: C.brown, lh: 1.1 }),
     text(L + 170, TOP + 40, lw - 200, 60, 'dòng YCCĐ cho năm bài của chủ đề “Năng lượng, công, công suất”', { size: 18, bold: true, color: C.muted, lh: 1.4 })];
   [['Sách giáo viên (nguyên văn)', 20], ['YCCĐ chủ đề trước (kiến thức nền)', 8], ['Chương trình 2018', 6], ['Tự đề xuất', 6]].forEach(([n, v], i) => {
-    const y = TOP + 150 + i * 76;
+    const y = TOP + 134 + i * 64;
     els.push(text(L + 30, y, lw - 120, 26, n, { size: 18, bold: true }), text(L + lw - 90, y, 60, 26, String(v), { size: 18, bold: true, color: C.muted, align: 'right' }),
       rect(L + 30, y + 36, lw - 60, 16, { fill: C.track, radius: 8 }), rect(L + 30, y + 36, (lw - 60) * v / 20, 16, { fill: C.amber, radius: 8, grow: true }));
   });
+  els.push(cite(L + 16, BOTTOM - 96, lw - 32, 80, 'ct-vatli-nang-luong-nho', 'Chương trình môn Vật lí 2018: YCCĐ chủ đề “Công, năng lượng, công suất”', null));
   els.push(card(rx, TOP, rw, H, { fill: C.dark }),
     text(rx + 30, TOP + 28, rw - 60, 24, 'SỬ DỤNG TRÍ TUỆ NHÂN TẠO (AI)', { size: 15, bold: true, color: C.gold, spacing: 1.5 }));
   [['Website không tích hợp AI', 'Không tự sinh nội dung đề khi giáo viên sử dụng.'],
@@ -456,7 +457,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
 }
 
 // 19. Cảm ơn
-slides.push({ layout: 'cover', els: [
+slides.push({ layout: 'cover', id: 'cam-on', els: [
   rect(0, 0, 16, 720, { fill: C.band, radius: 0 }),
   circle(88, 64, 60, C.white), img(90, 66, 56, 56, 'truong', { round: true }), circle(160, 64, 60, C.white), img(162, 66, 56, 56, 'khoa', { round: true }),
   text(88, 250, 1000, 70, 'Cảm ơn quý thầy cô đã lắng nghe', { size: 54, weight: 800, color: C.white }),
@@ -466,8 +467,13 @@ slides.push({ layout: 'cover', els: [
 ] });
 
 const ids = Object.fromEntries(slides.map((sl, i) => [sl.id, i + 1]).filter(([id]) => id));
-for (const sl of slides) for (const e of sl.els) if (e.t === 'cite') {
+for (const sl of slides) for (const e of sl.els) if (e.t === 'cite' && e.target) {
   if (!ids[e.target]) throw new Error('Không có slide căn cứ: ' + e.target);
   e.slide = ids[e.target];
+}
+const NOTES = require('./notes.cjs');
+for (const sl of slides) {
+  sl.notes = NOTES[sl.id] || NOTES[sl.title];
+  if (!sl.notes) throw new Error('Thiếu ghi chú cho slide: ' + (sl.title || sl.id));
 }
 module.exports = { slides, C, FOOTER: 'Báo cáo đề cương khóa luận · Nguyễn Trần Hoài Huy' };

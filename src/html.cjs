@@ -8,7 +8,7 @@ const OUT = path.join(d, '..');
 const IMG = { truong: 'assets/truong.png', khoa: 'assets/khoa.png', web: 'assets/web-matrix.png', export: 'assets/web-export.png' };
 const imgFile = k => IMG[k] || `assets/trich/${k}.png`;
 // Khi phóng to, dùng bản cắt rộng hơn (có tiêu đề văn bản) nếu có.
-const ZOOM = { 'cv7991-noi-dung-nho': 'cv7991-noi-dung', 'cv7991-ma-tran-nho': 'cv7991-ma-tran', 'cv7991-dac-ta-nho': 'cv7991-dac-ta', 'tt22-dieu7-nho': 'tt22-dieu7' };
+const ZOOM = { 'ct-vatli-nang-luong-nho': 'ct-vatli-nang-luong', 'cv7991-noi-dung-nho': 'cv7991-noi-dung', 'cv7991-ma-tran-nho': 'cv7991-ma-tran', 'cv7991-dac-ta-nho': 'cv7991-dac-ta', 'tt22-dieu7-nho': 'tt22-dieu7' };
 const zoomOf = k => ZOOM[k] || k;
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -121,19 +121,27 @@ body{font-family:'Be Vietnam Pro',Arial,sans-serif;-webkit-font-smoothing:antial
 #lb.on{display:flex}
 #lb img{max-width:100%;max-height:86vh;background:#fff;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 #lb p{color:#e7e5e4;font:600 14px 'Be Vietnam Pro',sans-serif}
-.hud{position:fixed;right:14px;bottom:10px;color:#78716c;font:600 12px 'Be Vietnam Pro',sans-serif;opacity:0;transition:opacity .3s}
-body.mv .hud{opacity:1}
+.hud{position:fixed;right:12px;bottom:12px;display:flex;gap:6px;align-items:center;font:600 13px 'Be Vietnam Pro',sans-serif;opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
+body.mv .hud{opacity:1;pointer-events:auto}
+.hud span{color:#d6d3d1;background:rgba(28,25,23,.78);padding:7px 11px;border-radius:9px}
+.hud button{font:inherit;color:#fafaf9;background:rgba(28,25,23,.78);border:1px solid rgba(255,255,255,.14);padding:7px 11px;border-radius:9px;cursor:pointer}
+.hud button:hover{background:#${C.brown}}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:42vh;overflow:auto;z-index:7;background:rgba(28,25,23,.94);color:#f5f5f4;padding:18px 26px 64px;font:400 18px/1.6 'Be Vietnam Pro',sans-serif;white-space:pre-wrap;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.75,.25,1);box-shadow:0 -10px 30px rgba(0,0,0,.3)}
+#notes.on{transform:none}
+#notes b{display:block;color:#${C.gold};font-size:13px;letter-spacing:1px;margin-bottom:6px}
 @media print{
   @page{size:1280px 720px;margin:0}
   html,body{height:auto;overflow:visible;background:none}
   .slide{display:block!important;position:relative;left:0;top:0;transform:none!important;page-break-after:always;break-after:page}
-  .hud,#lb,.hint,#bar{display:none!important}
+  .hud,#lb,.hint,#bar,#notes{display:none!important}
   .slide,.slide .a,.slide .af,.slide .ag{animation:none!important}
 }
 </style></head>
 <body>
 ${body}
-<div class="hud" id="hud"></div>
+<div class="hud" id="hud"><span id="pos"></span><button type="button" data-act="notes">Ghi chú (N)</button><button type="button" data-act="presenter">Cửa sổ người nói (P)</button><button type="button" data-act="full">Toàn màn hình (F)</button></div>
+<div id="notes"></div>
+<script>var NOTES=${JSON.stringify(slides.map(s => s.notes || ''))},TITLES=${JSON.stringify(slides.map(s => s.title || (s.id === 'bia' ? 'Bìa' : 'Cảm ơn')))};</script>
 <div id="bar"></div>
 <script>var ZIMG=${JSON.stringify(Object.fromEntries([...new Set(slides.flatMap(s => s.els.filter(e => e.zoom || e.t === 'cite').map(e => zoomOf(e.src))))].map(k => [k, images[k]])))};</script>
 <div id="lb"><img alt=""><p>Chạm bất kì đâu hoặc bấm Esc để đóng</p></div>
@@ -143,7 +151,29 @@ ${body}
   var m=location.hash.match(/(\\d+)/); if(m) i=Math.min(Math.max(+m[1]-1,0),slides.length-1);
   function fit(){var s=Math.min(innerWidth/1280,innerHeight/720);slides.forEach(function(e){e.style.transform='translate(-50%,-50%) scale('+s+')';});}
   var bar=document.getElementById('bar');
-  function show(){slides.forEach(function(e,k){e.classList.toggle('on',k===i);});bar.style.width=((i+1)/slides.length*100)+'%';hud.textContent=(i+1)+' / '+slides.length+'  ·  ← → chuyển slide  ·  F toàn màn hình  ·  Ctrl+P lưu PDF';history.replaceState(null,'','#'+(i+1));}
+  var notesEl=document.getElementById('notes'),pres=null,t0=Date.now();
+  function esc(t){return String(t).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function renderNotes(){notesEl.innerHTML='<b>GHI CHÚ · SLIDE '+(i+1)+'/'+slides.length+' · '+esc(TITLES[i]).toUpperCase()+'</b>'+esc(NOTES[i]);}
+  function renderPresenter(){
+    if(!pres||pres.closed)return;
+    var d=pres.document;
+    d.getElementById('pp').textContent='Slide '+(i+1)+' / '+slides.length;
+    d.getElementById('pt').textContent=TITLES[i];
+    d.getElementById('pn').textContent=NOTES[i];
+    d.getElementById('px').textContent=i+1<slides.length?'Tiếp theo: '+TITLES[i+1]:'Đây là slide cuối';
+  }
+  function openPresenter(){
+    if(pres&&!pres.closed){pres.focus();return;}
+    pres=window.open('','nguoi-noi','width=1000,height=720');
+    if(!pres){alert('Trình duyệt đã chặn cửa sổ mới. Hãy cho phép cửa sổ bật lên rồi bấm P lần nữa.');return;}
+    var d=pres.document;
+    d.open();d.write('<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Cửa sổ người nói</title><style>body{margin:0;background:#1c1917;color:#f5f5f4;font-family:"Be Vietnam Pro",Arial,sans-serif}header{display:flex;gap:12px;align-items:center;padding:14px 22px;background:#0c0a09}header b{color:#fbbf24;font-size:15px}#tm{margin-left:auto;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}button{font:600 15px inherit;font-family:inherit;color:#fff;background:#92400e;border:0;border-radius:9px;padding:9px 16px;cursor:pointer}h1{font-size:26px;margin:18px 22px 6px}#pn{white-space:pre-wrap;font-size:21px;line-height:1.6;margin:8px 22px 18px;color:#e7e5e4}#px{margin:0 22px 22px;color:#a8a29e;font-size:16px}</style></head><body><header><b id="pp"></b><button id="pv">◀ Trước</button><button id="nx">Sau ▶</button><span id="tm">00:00</span></header><h1 id="pt"></h1><div id="pn"></div><div id="px"></div></body></html>');d.close();
+    d.getElementById('pv').onclick=function(){go(-1);};d.getElementById('nx').onclick=function(){go(1);};
+    pres.addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(1);e.preventDefault();}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(-1);e.preventDefault();}});
+    setInterval(function(){if(pres.closed)return;var s=Math.floor((Date.now()-t0)/1000);pres.document.getElementById('tm').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},1000);
+    renderPresenter();
+  }
+  function show(){slides.forEach(function(e,k){e.classList.toggle('on',k===i);});bar.style.width=((i+1)/slides.length*100)+'%';document.getElementById('pos').textContent=(i+1)+' / '+slides.length;renderNotes();renderPresenter();history.replaceState(null,'','#'+(i+1));}
   function go(d){i=Math.min(Math.max(i+d,0),slides.length-1);show();}
   var lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
   function zoom(src){lbImg.src=src;lb.classList.add('on');}
@@ -153,7 +183,9 @@ ${body}
     if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].indexOf(e.key)>=0){go(1);e.preventDefault();}
     else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].indexOf(e.key)>=0){go(-1);e.preventDefault();}
     else if(e.key==='Home'){i=0;show();} else if(e.key==='End'){i=slides.length-1;show();}
-    else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+    else if(e.key==='f'||e.key==='F'){full();}
+    else if(e.key==='n'||e.key==='N'){notesEl.classList.toggle('on');}
+    else if(e.key==='p'||e.key==='P'){openPresenter();}
   });
   var tx=null;
   addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
@@ -164,7 +196,12 @@ ${body}
     if(z){zoom(ZIMG[z.getAttribute('data-zoom')]);return;}
     go(e.clientX>innerWidth/2?1:-1);
   });
-  var mt;addEventListener('mousemove',function(){document.body.classList.add('mv');clearTimeout(mt);mt=setTimeout(function(){document.body.classList.remove('mv');},1800);});
+  function full(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  var mt;function wake(){document.body.classList.add('mv');clearTimeout(mt);mt=setTimeout(function(){document.body.classList.remove('mv');},2500);}
+  addEventListener('mousemove',wake);addEventListener('touchstart',wake,{passive:true});
+  hud.addEventListener('click',function(e){e.stopPropagation();var a=e.target.getAttribute&&e.target.getAttribute('data-act');if(a==='notes')notesEl.classList.toggle('on');else if(a==='presenter')openPresenter();else if(a==='full')full();});
+  notesEl.addEventListener('click',function(e){e.stopPropagation();});
+  notesEl.addEventListener('touchend',function(e){e.stopPropagation();});
   addEventListener('resize',fit); fit(); show();
 })();
 </script>

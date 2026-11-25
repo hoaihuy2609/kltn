@@ -63,7 +63,7 @@ function add(slide, e) {
     });
   } else if (e.t === 'cite') {
     const tall = e.tall, ih = tall ? e.h - 84 : e.h - 16, iw = tall ? e.w - 16 : Math.round(e.w * 0.36);
-    const link = { slide: e.slide, tooltip: 'Tới slide trích dẫn' };
+    const link = e.slide ? { slide: e.slide, tooltip: 'Tới slide trích dẫn' } : undefined;
     slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { ...box, rectRadius: I(14), fill: { color: C.white }, line: { color: 'FCA5A5', width: 1.25 },
       shadow: { type: 'outer', color: '1C1917', opacity: 0.08, blur: 10, offset: 3, angle: 90 } });
     slide.addImage({ path: imgPath(e.src), ...fitWidth(e.src, e.x + 8, e.y + 8, iw, ih), hyperlink: link });
@@ -89,9 +89,11 @@ slides.forEach(s => {
     const note = s.els.find(e => e.t === 'note');
     add(slide, { t: 'text', x: 72, y: 684, w: 800, h: 22, text: note ? note.text : FOOTER, size: 13, bold: true, color: C.faint });
     s.els.filter(e => e.t !== 'note').forEach(e => add(slide, e));
+    slide.addNotes(s.notes);
   } else {
     const slide = pres.addSlide({ masterName: 'BIA' });
     s.els.forEach(e => add(slide, e));
+    slide.addNotes(s.notes);
   }
 });
 

@@ -130,3 +130,19 @@ lv = [w for w in ws3 if 180 <= w['top'] <= 245 and 240 <= w['x0'] <= 300]
 lv = [min(w['x0'] for w in lv), min(w['top'] for w in lv), max(w['x1'] for w in lv), max(w['bottom'] for w in lv)]
 save(piece(CV, 3, (70, 50, 776, 262), [ycd, lv]), 'cv7991-dac-ta')
 save(piece(CV, 3, (70, 50, 540, 262), [ycd, lv]), 'cv7991-dac-ta-nho')
+
+# ---- Chương trình môn Vật lí 2018 (ban hành kèm Thông tư 32/2018) ----
+CT = '/root/.claude/uploads/6b1f06c1-7651-543a-96d2-5b092d4f49e8/ed6b8ba4-12-ctvat-li-16202320.pdf'
+ct_h1 = piece(CT, 1, (180, 50, 690, 80))
+ct_h2 = piece(CT, 1, (180, 214, 690, 332))
+ws13 = words(CT, 13)
+def wbox(cond):
+    hit = [w for w in ws13 if cond(w)]
+    return [min(w['x0'] for w in hit), min(w['top'] for w in hit), max(w['x1'] for w in hit), max(w['bottom'] for w in hit)]
+head = wbox(lambda w: 58 <= w['top'] <= 70 and w['x0'] > 300)
+sect = wbox(lambda w: 120 <= w['top'] <= 132)
+ex = marks(CT, 13, 'Nêu được biểu thức tính công bằng tích của lực tác dụng và độ dịch chuyển theo phương của lực, nêu được đơn vị đo công là đơn vị đo năng lượng (với 1 J = 1 Nm); Tính được công trong một số trường hợp đơn giản.', after=220)
+ct_body = piece(CT, 13, (78, 54, 792, 268), [head, sect] + ex)
+save(stack([ct_h1, ct_h2]), 'ct-vatli-bia')
+save(ct_body, 'ct-vatli-nang-luong-nho')
+save(stack([ct_h1, ct_h2, piece(CT, 13, (78, 54, 792, 527), [head, sect] + ex)]), 'ct-vatli-nang-luong')
