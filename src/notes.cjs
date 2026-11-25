@@ -15,16 +15,11 @@ Thứ ba, từ đó nảy sinh nhu cầu liên kết câu hỏi với YCCĐ: c�
 
 Giải pháp của đề tài là một nguồn dữ liệu cho cả ba tài liệu: website liên kết mỗi câu hỏi với một dòng YCCĐ và một mức độ đánh giá, nên ma trận, bản đặc tả và đề kiểm tra được lập đồng bộ theo Công văn 7991, cho nội dung học kì II môn Vật lí 10, bộ Kết nối tri thức với cuộc sống. Đề tài làm hai giai đoạn: giai đoạn 1 với chủ đề "Năng lượng, công, công suất" (Bài 23 – 27), giai đoạn 2 với các chủ đề còn lại.`,
 
-  'Thông tư 22/2021/TT-BGDĐT': `Đây là căn cứ pháp lí thứ nhất, em trích nguyên văn, phần tô đỏ là em đánh dấu.
+  'Thông tư 22/2021/TT-BGDĐT': `Thông tư 22 xác định đánh giá phải căn cứ vào yêu cầu cần đạt của chương trình (khoản 1 Điều 4); kết quả đánh giá còn dùng để giáo viên điều chỉnh hoạt động dạy học (Điều 3). Đối với bài kiểm tra trên giấy hoặc máy tính được đánh giá bằng điểm số, đề được xây dựng dựa trên ma trận và đặc tả (khoản 1 Điều 7). Đây là căn cứ để đề tài liên kết câu hỏi với YCCĐ.`,
 
-Điều 3 — mục đích đánh giá: xác định mức độ hoàn thành nhiệm vụ học tập của học sinh theo YCCĐ; cung cấp thông tin chính xác, kịp thời để học sinh điều chỉnh hoạt động rèn luyện và học tập, cán bộ quản lý giáo dục và giáo viên điều chỉnh hoạt động dạy học.
-Điều 4 khoản 1: đánh giá căn cứ vào yêu cầu cần đạt được quy định trong Chương trình giáo dục phổ thông. Đây là lí do đề tài gắn mỗi câu hỏi với một dòng YCCĐ.
-Điều 7 khoản 1: với bài kiểm tra đánh giá bằng điểm số, đề kiểm tra được xây dựng dựa trên ma trận, đặc tả của đề kiểm tra, đáp ứng YCCĐ của môn học. Đây là căn cứ trực tiếp nhất cho việc website lập ma trận và bản đặc tả trước rồi mới chọn câu.`,
+  'Công văn 7991/BGDĐT-GDTrH': `Công văn 7991 hướng dẫn xây dựng các tài liệu phục vụ kiểm tra định kì: Sở Giáo dục và Đào tạo hướng dẫn các trường trung học phổ thông xây dựng ma trận, bản đặc tả, đề kiểm tra và hướng dẫn chấm; kèm mẫu ma trận và bản đặc tả để tham khảo, triển khai từ học kì II năm học 2024 – 2025.
 
-  'Công văn 7991/BGDĐT-GDTrH': `Căn cứ thứ hai là Công văn 7991 ngày 17/12/2024. Công văn yêu cầu các Sở hướng dẫn trường trung học phổ thông xây dựng ma trận, bản đặc tả, đề kiểm tra và hướng dẫn chấm đề kiểm tra định kì; trong năm học 2024 – 2025 triển khai từ học kì 2.
-
-Phụ lục 1 là mẫu ma trận: phần trắc nghiệm khách quan gồm nhiều lựa chọn, "Đúng – Sai", trả lời ngắn; mỗi dạng chia ba mức Biết, Hiểu, Vận dụng; ví dụ minh họa phân bổ điểm theo mức là 40% – 30% – 30%.
-Phụ lục 2 là mẫu bản đặc tả: cột "Yêu cầu cần đạt" ghi YCCĐ theo từng mức Biết, Hiểu, Vận dụng, kèm số câu ở mỗi mức. Website xuất ma trận và bản đặc tả theo đúng hai mẫu này. Phần tự luận trong mẫu chưa thuộc phạm vi đề tài.`,
+Ma trận thể hiện phân bổ câu hỏi, điểm và tỉ lệ; phụ lục minh họa tỉ lệ điểm theo mức Biết – Hiểu – Vận dụng là 40 – 30 – 30. Bản đặc tả làm rõ YCCĐ được đánh giá bằng số câu tương ứng theo dạng và mức độ Biết, Hiểu, Vận dụng.`,
 
   'Đánh giá theo YCCĐ và bản đặc tả': `2.1. Black và Wiliam (1998) cho thấy đánh giá trên lớp phát huy tác dụng khi gắn chặt với mục tiêu học tập và cung cấp thông tin để điều chỉnh dạy học. Trong chương trình 2018, mục tiêu này được cụ thể hóa thành YCCĐ; Thông tư 22/2021 quy định đánh giá căn cứ vào YCCĐ. Vì vậy câu hỏi kiểm tra cần truy vết được tới YCCĐ mà nó đo lường; đây là căn cứ để đề tài gắn mỗi câu hỏi với một dòng YCCĐ cụ thể.
 

@@ -76,12 +76,16 @@ slides.push({ layout: 'cover', id: 'bia', els: [
 // 3b. Căn cứ pháp lí: Thông tư 22/2021
 function docCard(x, y, w, h, kicker, name, lines, points) {
   const els = [card(x, y, w, h, { fill: C.dark }),
-    text(x + 26, y + 26, w - 52, 22, kicker, { size: 14, bold: true, color: C.gold, spacing: 1.5 }),
-    text(x + 26, y + 54, w - 52, 64, name, { size: 22, weight: 800, color: C.white, lh: 1.25 }),
-    text(x + 26, y + 124, w - 52, 120, lines, { size: 15, color: C.darkMuted, lh: 1.45 })];
-  points.forEach((t, i) => {
-    const py = y + 262 + i * 98;
-    els.push(circle(x + 28, py + 8, 10, C.gold), text(x + 50, py, w - 76, 90, t, { size: 16, bold: true, color: C.white, lh: 1.4 }));
+    text(x + 24, y + 24, w - 48, 22, kicker, { size: 14, bold: true, color: C.gold, spacing: 1.5 }),
+    text(x + 24, y + 50, w - 48, 34, name, { size: 22, weight: 800, color: C.white, align: 'left' }),
+    text(x + 24, y + 92, w - 48, 110, lines, { size: 15, color: C.darkMuted, lh: 1.45, align: 'left' })];
+  points.forEach(([main, sub], i) => {
+    const py = y + 218 + i * 128;
+    // Ước lượng số dòng (khoảng 27 kí tự/dòng ở cỡ 15 đậm) để đặt dòng điều khoản ngay dưới.
+    const lines = Math.ceil(main.length / 27), mh = Math.round(lines * 15 * 1.4) + 4;
+    els.push(circle(x + 26, py + 7, 10, C.gold),
+      text(x + 46, py, w - 70, sub ? mh : 118, main, { size: 15, bold: true, color: C.white, lh: 1.4, align: 'left' }),
+      ...(sub ? [text(x + 46, py + mh + 4, w - 70, 22, sub, { size: 14, color: C.gold, align: 'left' })] : []));
   });
   return els;
 }
@@ -91,26 +95,28 @@ function excerptCard(x, y, w, h, src, label, ratio) {
     img(x + 16, y + 44, iw, ih, src, { zoom: true, frame: true })];
 }
 {
-  const lw = 284, rx = L + lw + 24, rw = R - rx, ch = (H - 16) / 2;
+  const lw = 320, rx = L + lw + 24, rw = R - rx, ch = (H - 16) / 2;
   content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI · CĂN CỨ PHÁP LÍ', 'Thông tư 22/2021/TT-BGDĐT', [
-    ...docCard(L, TOP, lw, H, 'THÔNG TƯ SỐ', '22/2021/TT-BGDĐT', 'Bộ Giáo dục và Đào tạo, ngày 20/7/2021. Quy định về đánh giá học sinh trung học cơ sở và học sinh trung học phổ thông.',
-      ['Đánh giá căn cứ vào yêu cầu cần đạt (Điều 4)', 'Đề kiểm tra định kì dựa trên ma trận, đặc tả (Điều 7)']),
-    ...excerptCard(rx, TOP, rw, ch, 'tt22-dieu3-4-nho', 'Điều 3. Mục đích đánh giá · Điều 4. Yêu cầu đánh giá (khoản 1)', 1467 / 385),
-    ...excerptCard(rx, TOP + ch + 16, rw, ch, 'tt22-dieu7-nho', 'Điều 7. Đánh giá định kì (khoản 1)', 1467 / 401),
-    { t: 'note', text: 'Trích nguyên văn · phần tô đỏ do người báo cáo đánh dấu' },
+    ...docCard(L, TOP, lw, H, 'THÔNG TƯ', '22/2021/TT-BGDĐT', 'Bộ Giáo dục và Đào tạo, ngày 20/7/2021. Quy định về đánh giá học sinh trung học cơ sở và học sinh trung học phổ thông.',
+      [['Đánh giá căn cứ vào YCCĐ của chương trình.', 'Khoản 1 Điều 4'],
+       ['Bài kiểm tra định kì đánh giá bằng điểm số: đề được xây dựng dựa trên ma trận, đặc tả.', 'Khoản 1 Điều 7']]),
+    ...excerptCard(rx, TOP, rw, ch, 'tt22-dieu3-4-nho', 'Mục đích và căn cứ đánh giá · Điều 3, khoản 1 Điều 4', 1467 / 385),
+    ...excerptCard(rx, TOP + ch + 16, rw, ch, 'tt22-dieu7-nho', 'Yêu cầu xây dựng đề kiểm tra định kì · khoản 1 Điều 7', 1467 / 401),
+    { t: 'note', text: 'Trích Thông tư 22/2021/TT-BGDĐT · Phần tô đỏ do người báo cáo đánh dấu' },
   ], 'tt22');
 }
 
 // 3c. Căn cứ pháp lí: Công văn 7991
 {
-  const lw = 284, rx = L + lw + 24, rw = R - rx, h1 = 218, h2 = H - h1 - 16, bw = (rw - 16) / 2;
+  const lw = 320, rx = L + lw + 24, rw = R - rx, h1 = 218, h2 = H - h1 - 16, bw = (rw - 16) / 2;
   content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI · CĂN CỨ PHÁP LÍ', 'Công văn 7991/BGDĐT-GDTrH', [
-    ...docCard(L, TOP, lw, H, 'CÔNG VĂN SỐ', '7991/BGDĐT-GDTrH', 'Bộ Giáo dục và Đào tạo, ngày 17/12/2024. V/v thực hiện kiểm tra, đánh giá đối với cấp THCS, THPT.',
-      ['Xây dựng ma trận, bản đặc tả, đề kiểm tra định kì; áp dụng từ học kì 2 năm học 2024 – 2025', 'Phụ lục: mẫu ma trận và bản đặc tả']),
-    ...excerptCard(rx, TOP, rw, h1, 'cv7991-noi-dung-nho', 'Nội dung công văn', 1522 / 312),
-    ...excerptCard(rx, TOP + h1 + 16, bw, h2, 'cv7991-ma-tran-nho', 'Phụ lục 1: mẫu ma trận đề kiểm tra', 1323 / 834),
-    ...excerptCard(rx + bw + 16, TOP + h1 + 16, bw, h2, 'cv7991-dac-ta-nho', 'Phụ lục 2: mẫu bản đặc tả', 1489 / 700),
-    { t: 'note', text: 'Trích nguyên văn · phần tô đỏ do người báo cáo đánh dấu' },
+    ...docCard(L, TOP, lw, H, 'CÔNG VĂN', '7991/BGDĐT-GDTrH', 'Bộ Giáo dục và Đào tạo, ngày 17/12/2024. Về thực hiện kiểm tra, đánh giá đối với cấp THCS, THPT.',
+      [['Sở GDĐT hướng dẫn các trường THPT xây dựng ma trận, bản đặc tả, đề kiểm tra và hướng dẫn chấm đề kiểm tra định kì.', null],
+       ['Kèm mẫu ma trận và bản đặc tả để tham khảo; triển khai từ học kì II năm học 2024 – 2025.', null]]),
+    ...excerptCard(rx, TOP, rw, h1, 'cv7991-noi-dung-nho', 'Hướng dẫn xây dựng đề kiểm tra định kì', 1522 / 312),
+    ...excerptCard(rx, TOP + h1 + 16, bw, h2, 'cv7991-ma-tran-nho', 'Ma trận: phân bổ câu hỏi, điểm và tỉ lệ', 1323 / 834),
+    ...excerptCard(rx + bw + 16, TOP + h1 + 16, bw, h2, 'cv7991-dac-ta-nho', 'Bản đặc tả: YCCĐ và số câu theo mức độ', 1489 / 700),
+    { t: 'note', text: 'Trích Công văn 7991/BGDĐT-GDTrH và phụ lục · Phần tô đỏ do người báo cáo đánh dấu' },
   ], 'cv7991');
 }
 
