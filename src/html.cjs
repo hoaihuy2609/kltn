@@ -38,7 +38,7 @@ function el(e, images) {
   }
   if (e.t === 'text') {
     const style = css({ ...box(e), 'font-size': e.size + 'px', 'font-weight': e.weight || (e.bold ? 700 : 400), color: '#' + e.color,
-      'text-align': e.align || 'left', 'justify-content': e.valign === 'middle' ? 'center' : e.valign === 'bottom' ? 'flex-end' : 'flex-start',
+      'text-align': e.align || (e.size <= 21 ? 'justify' : 'left'), 'justify-content': e.valign === 'middle' ? 'center' : e.valign === 'bottom' ? 'flex-end' : 'flex-start',
       'line-height': e.lh || 1.3, 'letter-spacing': e.spacing ? (e.spacing * 1.333).toFixed(2) + 'px' : undefined,
       'padding-left': e.hang ? '22px' : undefined, 'text-indent': e.hang ? '-22px' : undefined });
     return `<div class="t" style="${style}"><span>${esc(e.text).replace(/\n/g, '<br>')}</span></div>`;
@@ -116,7 +116,7 @@ body{font-family:'Be Vietnam Pro',Arial,sans-serif;-webkit-font-smoothing:antial
 .cite .cl{position:absolute;display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.35}
 .cite .cl b{font-size:11px;letter-spacing:.8px;color:#dc2626}
 .cite .cl b i{font-style:normal}
-.cite .cl span{font-size:15px;font-weight:600;color:#${C.text}}
+.cite .cl span{font-size:15px;font-weight:600;color:#${C.text};text-align:justify}
 #lb{position:fixed;inset:0;z-index:20;display:none;background:rgba(12,10,9,.88);align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:3vh 3vw;cursor:zoom-out}
 #lb.on{display:flex}
 #lb img{max-width:100%;max-height:86vh;background:#fff;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
@@ -126,7 +126,7 @@ body.mv .hud{opacity:1;pointer-events:auto}
 .hud span{color:#d6d3d1;background:rgba(28,25,23,.78);padding:7px 11px;border-radius:9px}
 .hud button{font:inherit;color:#fafaf9;background:rgba(28,25,23,.78);border:1px solid rgba(255,255,255,.14);padding:7px 11px;border-radius:9px;cursor:pointer}
 .hud button:hover{background:#${C.brown}}
-#notes{position:fixed;left:0;right:0;bottom:0;max-height:42vh;overflow:auto;z-index:7;background:rgba(28,25,23,.94);color:#f5f5f4;padding:18px 26px 64px;font:400 18px/1.6 'Be Vietnam Pro',sans-serif;white-space:pre-wrap;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.75,.25,1);box-shadow:0 -10px 30px rgba(0,0,0,.3)}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:42vh;overflow:auto;z-index:7;background:rgba(28,25,23,.94);color:#f5f5f4;padding:18px 26px 64px;font:400 18px/1.6 'Be Vietnam Pro',sans-serif;white-space:pre-wrap;text-align:justify;transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.75,.25,1);box-shadow:0 -10px 30px rgba(0,0,0,.3)}
 #notes.on{transform:none}
 #notes b{display:block;color:#${C.gold};font-size:13px;letter-spacing:1px;margin-bottom:6px}
 @media print{
@@ -167,7 +167,7 @@ ${body}
     pres=window.open('','nguoi-noi','width=1000,height=720');
     if(!pres){alert('Trình duyệt đã chặn cửa sổ mới. Hãy cho phép cửa sổ bật lên rồi bấm P lần nữa.');return;}
     var d=pres.document;
-    d.open();d.write('<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Cửa sổ người nói</title><style>body{margin:0;background:#1c1917;color:#f5f5f4;font-family:"Be Vietnam Pro",Arial,sans-serif}header{display:flex;gap:12px;align-items:center;padding:14px 22px;background:#0c0a09}header b{color:#fbbf24;font-size:15px}#tm{margin-left:auto;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}button{font:600 15px inherit;font-family:inherit;color:#fff;background:#92400e;border:0;border-radius:9px;padding:9px 16px;cursor:pointer}h1{font-size:26px;margin:18px 22px 6px}#pn{white-space:pre-wrap;font-size:21px;line-height:1.6;margin:8px 22px 18px;color:#e7e5e4}#px{margin:0 22px 22px;color:#a8a29e;font-size:16px}</style></head><body><header><b id="pp"></b><button id="pv">◀ Trước</button><button id="nx">Sau ▶</button><span id="tm">00:00</span></header><h1 id="pt"></h1><div id="pn"></div><div id="px"></div></body></html>');d.close();
+    d.open();d.write('<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Cửa sổ người nói</title><style>body{margin:0;background:#1c1917;color:#f5f5f4;font-family:"Be Vietnam Pro",Arial,sans-serif}header{display:flex;gap:12px;align-items:center;padding:14px 22px;background:#0c0a09}header b{color:#fbbf24;font-size:15px}#tm{margin-left:auto;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}button{font:600 15px inherit;font-family:inherit;color:#fff;background:#92400e;border:0;border-radius:9px;padding:9px 16px;cursor:pointer}h1{font-size:26px;margin:18px 22px 6px}#pn{white-space:pre-wrap;text-align:justify;font-size:21px;line-height:1.6;margin:8px 22px 18px;color:#e7e5e4}#px{margin:0 22px 22px;color:#a8a29e;font-size:16px}</style></head><body><header><b id="pp"></b><button id="pv">◀ Trước</button><button id="nx">Sau ▶</button><span id="tm">00:00</span></header><h1 id="pt"></h1><div id="pn"></div><div id="px"></div></body></html>');d.close();
     d.getElementById('pv').onclick=function(){go(-1);};d.getElementById('nx').onclick=function(){go(1);};
     pres.addEventListener('keydown',function(e){if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>=0){go(1);e.preventDefault();}else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>=0){go(-1);e.preventDefault();}});
     setInterval(function(){if(pres.closed)return;var s=Math.floor((Date.now()-t0)/1000);pres.document.getElementById('tm').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},1000);

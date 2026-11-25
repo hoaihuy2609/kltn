@@ -57,7 +57,7 @@ function add(slide, e) {
   } else if (e.t === 'text') {
     slide.addText(e.text, {
       ...box, isTextBox: true, margin: 0, fontFace: FONT, fontSize: PT(e.size), bold: !!(e.bold || (e.weight && e.weight >= 600)),
-      color: e.color, align: e.align || 'left', valign: e.valign || 'top', lineSpacingMultiple: Math.round(((e.lh || 1.3) / 1.17) * 100) / 100,
+      color: e.color, align: e.align || (e.size <= 21 ? 'justify' : 'left'), valign: e.valign || 'top', lineSpacingMultiple: Math.round(((e.lh || 1.3) / 1.17) * 100) / 100,
       charSpacing: e.spacing || undefined, fit: 'none', wrap: true,
       ...(e.hang ? { indent: 0, paraSpaceBefore: 0 } : {}),
     });
@@ -70,7 +70,7 @@ function add(slide, e) {
     const lx = tall ? e.x + 14 : e.x + iw + 22, ly = tall ? e.y + ih + 18 : e.y + 8, lw = tall ? e.w - 28 : e.w - iw - 36, lh = tall ? e.h - ih - 28 : e.h - 16;
     slide.addText([
       { text: e.label, options: { fontSize: PT(15), bold: true, color: C.text, hyperlink: link } },
-    ], { x: I(lx), y: I(ly), w: I(lw), h: I(lh), isTextBox: true, margin: 0, fontFace: FONT, valign: 'middle', lineSpacingMultiple: 1.15, fit: 'none' });
+    ], { x: I(lx), y: I(ly), w: I(lw), h: I(lh), isTextBox: true, margin: 0, fontFace: FONT, valign: 'middle', align: 'justify', lineSpacingMultiple: 1.15, fit: 'none' });
   } else if (e.t === 'table') {
     const rows = e.rows.map((r, i) => r.map((c, j) => ({ text: c, options: {
       bold: i === 0 || j === 0, color: i === 0 ? C.white : C.text, fill: { color: i === 0 ? C.dark : C.white },
