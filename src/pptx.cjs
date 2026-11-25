@@ -10,7 +10,7 @@ const imgSize = k => { const b = fs.readFileSync(imgPath(k)); return { w: b.read
 // Ảnh vừa khít bề ngang khung, cắt phần dưới nếu thừa (giống object-fit theo chiều ngang ở bản HTML).
 function fitWidth(src, x, y, w, h) {
   const n = imgSize(src), fullH = w * n.h / n.w;
-  return fullH <= h + 0.5 ? { x: I(x), y: I(y), w: I(w), h: I(fullH) } : { x: I(x), y: I(y), w: I(w), h: I(fullH), sizing: { type: 'crop', x: 0, y: 0, w: I(w), h: I(h) } };
+  return fullH <= h + 0.5 ? { x: I(x), y: I(y + (h - fullH) / 2), w: I(w), h: I(fullH) } : { x: I(x), y: I(y), w: I(w), h: I(fullH), sizing: { type: 'crop', x: 0, y: 0, w: I(w), h: I(h) } };
 }
 const FONT = 'Arial';
 const I = px => px / 96;          // khung 1280 × 720 px = 13,333 × 7,5 inch

@@ -111,7 +111,7 @@ body{font-family:'Be Vietnam Pro',Arial,sans-serif;-webkit-font-smoothing:antial
 @media (prefers-reduced-motion:reduce){.slide.on .af,.slide.on .a,.slide.on .ag,#lb.on img{animation:none!important}#bar{transition:none}}
 .zoom,.cite{cursor:zoom-in}
 .cite{background:#fff;border:1.5px solid #fca5a5;border-radius:14px;box-shadow:${shadow};overflow:hidden}
-.cite .cim{position:absolute;overflow:hidden;border-radius:8px;border:1px solid #${C.line};background:#fff}
+.cite .cim{position:absolute;overflow:hidden;border-radius:8px;border:1px solid #${C.line};background:#fff;display:flex;align-items:center}
 .cite .cim img{width:100%;display:block}
 .cite .cl{position:absolute;display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.35}
 .cite .cl b{font-size:11px;letter-spacing:.8px;color:#dc2626}
