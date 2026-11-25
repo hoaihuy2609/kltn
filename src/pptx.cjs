@@ -62,14 +62,13 @@ function add(slide, e) {
       ...(e.hang ? { indent: 0, paraSpaceBefore: 0 } : {}),
     });
   } else if (e.t === 'cite') {
-    const tall = e.tall, ih = tall ? e.h - 108 : e.h - 16, iw = tall ? e.w - 16 : Math.round(e.w * 0.36);
+    const tall = e.tall, ih = tall ? e.h - 84 : e.h - 16, iw = tall ? e.w - 16 : Math.round(e.w * 0.36);
     const link = { slide: e.slide, tooltip: 'Tới slide trích dẫn' };
     slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { ...box, rectRadius: I(14), fill: { color: C.white }, line: { color: 'FCA5A5', width: 1.25 },
       shadow: { type: 'outer', color: '1C1917', opacity: 0.08, blur: 10, offset: 3, angle: 90 } });
     slide.addImage({ path: imgPath(e.src), ...fitWidth(e.src, e.x + 8, e.y + 8, iw, ih), hyperlink: link });
     const lx = tall ? e.x + 14 : e.x + iw + 22, ly = tall ? e.y + ih + 18 : e.y + 8, lw = tall ? e.w - 28 : e.w - iw - 36, lh = tall ? e.h - ih - 28 : e.h - 16;
     slide.addText([
-      { text: 'TRÍCH NGUYÊN VĂN · bấm để xem', options: { fontSize: PT(11), bold: true, color: 'DC2626', charSpacing: 0.6, breakLine: true, hyperlink: link } },
       { text: e.label, options: { fontSize: PT(15), bold: true, color: C.text, hyperlink: link } },
     ], { x: I(lx), y: I(ly), w: I(lw), h: I(lh), isTextBox: true, margin: 0, fontFace: FONT, valign: 'middle', lineSpacingMultiple: 1.15, fit: 'none' });
   } else if (e.t === 'table') {

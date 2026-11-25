@@ -31,9 +31,9 @@ function el(e, images) {
   if (e.t === 'ellipse') return `<div class="r" style="${css({ ...box(e), background: '#' + e.fill, 'border-radius': '50%' })}"></div>`;
   if (e.t === 'img') return `<img class="r${e.zoom ? ' zoom' : ''}" alt="" ${e.zoom ? `data-zoom="${zoomOf(e.src)}"` : ''} src="${images[e.src]}" style="${css({ ...box(e), 'border-radius': e.round ? '50%' : (e.radius || 0) + 'px', 'box-shadow': e.shadow ? '0 18px 44px rgba(28,25,23,.18)' : undefined, border: e.frame ? '1px solid #e7e5e4' : undefined, 'object-fit': 'cover', 'object-position': 'left top' })}">`;
   if (e.t === 'cite') {
-    const tall = e.tall, ih = tall ? e.h - 108 : e.h - 16, iw = tall ? e.w - 16 : Math.round(e.w * 0.36);
+    const tall = e.tall, ih = tall ? e.h - 84 : e.h - 16, iw = tall ? e.w - 16 : Math.round(e.w * 0.36);
     const label = `<div class="cl" style="${css(tall ? { left: '14px', right: '14px', top: (ih + 18) + 'px', bottom: '10px' } : { left: (iw + 22) + 'px', right: '14px', top: '8px', bottom: '8px' })}">
-      <b>TRÍCH NGUYÊN VĂN<i class="hint"> · chạm để phóng to</i></b><span>${esc(e.label)}</span></div>`;
+      <span>${esc(e.label)}</span></div>`;
     return `<div class="r cite" data-zoom="${zoomOf(e.src)}" style="${css(box(e))}"><div class="cim" style="${css({ left: '8px', top: '8px', width: iw + 'px', height: ih + 'px' })}"><img alt="" src="${images[e.src]}"></div>${label}</div>`;
   }
   if (e.t === 'text') {

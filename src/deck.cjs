@@ -20,7 +20,7 @@ const badge = (x, y, n, o = {}) => [rect(x, y, 40, 40, { fill: o.fill || C.brown
 
 const slides = [];
 const content = (kicker, title, els, id) => slides.push({ layout: 'content', kicker, title, els, id });
-// Ô trích dẫn văn bản: ảnh xem trước + nhãn; HTML chạm để phóng to, PowerPoint bấm để tới slide căn cứ.
+// Ô trích dẫn văn bản: ảnh xem trước + nhãn; HTML chạm để phóng to, PowerPoint bấm để tới slide căn cứ (không ghi chữ hướng dẫn trên slide).
 const cite = (x, y, w, h, src, label, target, o = {}) => ({ t: 'cite', x, y, w, h, src, label, target, ...o });
 
 // 1. Bìa
