@@ -1,0 +1,12 @@
+{
+  "name": "bao-cao-de-cuong-kltn",
+  "private": true,
+  "description": "Slide báo cáo đề cương khóa luận tốt nghiệp (HTML + PowerPoint + PDF từ cùng một nội dung)",
+  "scripts": {
+    "slides": "node src/html.cjs && node src/pptx.cjs",
+    "pdf": "node src/pdf.cjs"
+  },
+  "devDependencies": {
+    "pptxgenjs": "3.12.0"
+  }
+}
