@@ -296,7 +296,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
   [['Sách giáo viên (nguyên văn)', 20], ['YCCĐ chủ đề trước (kiến thức nền)', 8], ['Chương trình 2018', 6], ['Tự đề xuất', 6]].forEach(([n, v], i) => {
     const y = TOP + 150 + i * 76;
     els.push(text(L + 30, y, lw - 120, 26, n, { size: 18, bold: true }), text(L + lw - 90, y, 60, 26, String(v), { size: 18, bold: true, color: C.muted, align: 'right' }),
-      rect(L + 30, y + 36, lw - 60, 16, { fill: C.track, radius: 8 }), rect(L + 30, y + 36, (lw - 60) * v / 20, 16, { fill: C.amber, radius: 8 }));
+      rect(L + 30, y + 36, lw - 60, 16, { fill: C.track, radius: 8 }), rect(L + 30, y + 36, (lw - 60) * v / 20, 16, { fill: C.amber, radius: 8, grow: true }));
   });
   els.push(card(rx, TOP, rw, H, { fill: C.dark }),
     text(rx + 30, TOP + 28, rw - 60, 24, 'SỬ DỤNG TRÍ TUỆ NHÂN TẠO (AI)', { size: 15, bold: true, color: C.gold, spacing: 1.5 }));
@@ -365,7 +365,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
   [['Bài 23. Năng lượng. Công cơ học', 125], ['Bài 24. Công suất', 66], ['Bài 25. Động năng, thế năng', 86], ['Bài 26. Cơ năng và định luật bảo toàn cơ năng', 78], ['Bài 27. Hiệu suất', 52]].forEach(([n, v], i) => {
     const y = TOP + 178 + i * 60, bx = L + 470, bw = W - 470 - 70;
     els.push(text(L, y, 450, 30, n, { size: 18, bold: true, valign: 'middle' }),
-      rect(bx, y + 5, bw, 20, { fill: C.track, radius: 10 }), rect(bx, y + 5, bw * v / 125, 20, { fill: C.amber, radius: 10 }),
+      rect(bx, y + 5, bw, 20, { fill: C.track, radius: 10 }), rect(bx, y + 5, bw * v / 125, 20, { fill: C.amber, radius: 10, grow: true }),
       text(R - 60, y, 60, 30, String(v), { size: 18, bold: true, color: C.muted, align: 'right', valign: 'middle' }));
   });
   content('07 — KẾT QUẢ BƯỚC ĐẦU (GIAI ĐOẠN 1)', 'Ngân hàng câu hỏi chủ đề Năng lượng', [...els,

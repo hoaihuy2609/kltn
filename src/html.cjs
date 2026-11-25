@@ -67,7 +67,16 @@ function render() {
         <div class="t" style="left:1108px;top:686px;width:100px;height:20px;font-size:14px;font-weight:600;color:#${C.faint};text-align:right"><span>${n}</span></div>`;
     }
     const bg = s.layout === 'cover' ? C.dark : C.bg;
-    return `<section class="slide" data-n="${n}" style="background:#${bg}">${frame}${s.els.map(e => el(e, images)).join('')}</section>`;
+    // Hiệu ứng: khung (nhãn, tiêu đề) hiện trước; các phần tử nội dung trượt lên lần lượt, thanh số liệu chạy dài ra.
+    const body = s.els.map((e, k) => {
+      const html = el(e, images);
+      if (!html) return '';
+      const delay = 140 + Math.min(k, 22) * 28;
+      return e.grow
+        ? `<div class="ag" style="--d:${delay + 250}ms;transform-origin:${e.x}px 0">${html}</div>`
+        : `<div class="a" style="--d:${delay}ms">${html}</div>`;
+    }).join('');
+    return `<section class="slide" data-n="${n}" style="background:#${bg}">${frame ? `<div class="af">${frame}</div>` : ''}${body}</section>`;
   }).join('\n');
 
   return `<!doctype html>
@@ -86,6 +95,20 @@ body{font-family:'Be Vietnam Pro',Arial,sans-serif;-webkit-font-smoothing:antial
 .tb th{background:#${C.dark};color:#fff;font-weight:700;text-align:center;padding:0 16px}
 .tb td{text-align:center;padding:0 16px;border-top:1px solid #${C.line};font-variant-numeric:tabular-nums}
 .tb th:first-child,.tb td:first-child{text-align:left;font-weight:600}
+.slide.on .af{animation:fIn .5s ease-out both}
+.slide.on .a{animation:up .6s cubic-bezier(.2,.75,.25,1) both;animation-delay:var(--d)}
+.slide.on .ag{animation:grow .9s cubic-bezier(.3,.7,.2,1) both;animation-delay:var(--d)}
+@keyframes fIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:none}}
+.cite{transition:transform .2s ease,box-shadow .2s ease}
+.cite:hover{transform:translateY(-2px);box-shadow:0 2px 0 #fca5a5,0 14px 30px rgba(28,25,23,.12)}
+.zoom{transition:filter .2s}.zoom:hover{filter:brightness(.97)}
+#bar{position:fixed;left:0;bottom:0;height:3px;background:#${C.amber};transition:width .45s cubic-bezier(.2,.75,.25,1);z-index:5}
+#lb{transition:opacity .25s;opacity:0}#lb.on{opacity:1}
+#lb.on img{animation:zIn .3s cubic-bezier(.2,.75,.25,1) both}
+@keyframes zIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.slide.on .af,.slide.on .a,.slide.on .ag,#lb.on img{animation:none!important}#bar{transition:none}}
 .zoom,.cite{cursor:zoom-in}
 .cite{background:#fff;border:1.5px solid #fca5a5;border-radius:14px;box-shadow:${shadow};overflow:hidden}
 .cite .cim{position:absolute;overflow:hidden;border-radius:8px;border:1px solid #${C.line};background:#fff}
@@ -104,12 +127,14 @@ body:hover .hud{opacity:1}
   @page{size:1280px 720px;margin:0}
   html,body{height:auto;overflow:visible;background:none}
   .slide{display:block!important;position:relative;left:0;top:0;transform:none!important;page-break-after:always;break-after:page}
-  .hud,#lb,.hint{display:none!important}
+  .hud,#lb,.hint,#bar{display:none!important}
+  .slide,.slide .a,.slide .af,.slide .ag{animation:none!important}
 }
 </style></head>
 <body>
 ${body}
 <div class="hud" id="hud"></div>
+<div id="bar"></div>
 <script>var ZIMG=${JSON.stringify(Object.fromEntries([...new Set(slides.flatMap(s => s.els.filter(e => e.zoom || e.t === 'cite').map(e => zoomOf(e.src))))].map(k => [k, images[k]])))};</script>
 <div id="lb"><img alt=""><p>Chạm bất kì đâu hoặc bấm Esc để đóng</p></div>
 <script>
@@ -117,7 +142,8 @@ ${body}
   var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,hud=document.getElementById('hud');
   var m=location.hash.match(/(\\d+)/); if(m) i=Math.min(Math.max(+m[1]-1,0),slides.length-1);
   function fit(){var s=Math.min(innerWidth/1280,innerHeight/720);slides.forEach(function(e){e.style.transform='translate(-50%,-50%) scale('+s+')';});}
-  function show(){slides.forEach(function(e,k){e.classList.toggle('on',k===i);});hud.textContent=(i+1)+' / '+slides.length+'  ·  ← → chuyển slide  ·  F toàn màn hình  ·  Ctrl+P lưu PDF';history.replaceState(null,'','#'+(i+1));}
+  var bar=document.getElementById('bar');
+  function show(){slides.forEach(function(e,k){e.classList.toggle('on',k===i);});bar.style.width=((i+1)/slides.length*100)+'%';hud.textContent=(i+1)+' / '+slides.length+'  ·  ← → chuyển slide  ·  F toàn màn hình  ·  Ctrl+P lưu PDF';history.replaceState(null,'','#'+(i+1));}
   function go(d){i=Math.min(Math.max(i+d,0),slides.length-1);show();}
   var lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
   function zoom(src){lbImg.src=src;lb.classList.add('on');}

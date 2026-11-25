@@ -96,4 +96,21 @@ slides.forEach(s => {
   }
 });
 
-pres.writeFile({ fileName: path.join(d, '..', 'tai-ve', 'Bao_cao_de_cuong.pptx') }).then(f => console.log('pptx ok', f));
+// pptxgenjs chưa hỗ trợ hiệu ứng chuyển slide: thêm hiệu ứng mờ dần (Fade) vào từng slide sau khi ghi file.
+async function addFade(file) {
+  const JSZip = require('jszip');
+  const zip = await JSZip.loadAsync(fs.readFileSync(file));
+  for (const name of Object.keys(zip.files).filter(n => /^ppt\/slides\/slide\d+\.xml$/.test(n))) {
+    let xml = await zip.file(name).async('string');
+    if (xml.includes('<p:transition')) continue;
+    const tr = '<p:transition spd="med"><p:fade/></p:transition>';
+    xml = xml.includes('</p:clrMapOvr>') ? xml.replace('</p:clrMapOvr>', '</p:clrMapOvr>' + tr) : xml.replace('</p:cSld>', '</p:cSld>' + tr);
+    zip.file(name, xml);
+  }
+  // Ghi lại chỉ các tệp (không có mục thư mục), để mở tốt trên OneDrive, Google Drive.
+  const out = new JSZip();
+  for (const [name, f] of Object.entries(zip.files)) if (!f.dir) out.file(name, await f.async('nodebuffer'), { createFolders: false });
+  fs.writeFileSync(file, await out.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
+}
+const OUT = path.join(d, '..', 'tai-ve', 'Bao_cao_de_cuong.pptx');
+pres.writeFile({ fileName: OUT }).then(addFade).then(() => console.log('pptx ok', OUT));
