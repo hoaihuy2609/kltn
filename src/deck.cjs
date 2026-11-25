@@ -57,18 +57,18 @@ slides.push({ layout: 'cover', id: 'bia', els: [
 // 3. Tính cần thiết
 {
   const rows = [
-    ['01', 'Yêu cầu đổi mới kiểm tra, đánh giá', 'Chương trình giáo dục phổ thông 2018 định hướng phát triển phẩm chất, năng lực học sinh. Kiểm tra, đánh giá phải căn cứ vào yêu cầu cần đạt (YCCĐ); đề kiểm tra định kì đánh giá bằng điểm số được xây dựng dựa trên ma trận và bản đặc tả.'],
-    ['02', 'Quy trình thủ công dễ phát sinh sai lệch', 'Giáo viên phải lập ma trận, chép YCCĐ, tìm câu hỏi, tính điểm và tỉ lệ. Khi thay câu hỏi, cần đối chiếu và cập nhật các tài liệu liên quan; câu “Đúng – Sai” gồm bốn ý có thể thuộc các mức độ khác nhau càng làm việc đối chiếu phức tạp.'],
-    ['03', 'Nhu cầu liên kết câu hỏi với YCCĐ', 'Cần công cụ hỗ trợ lựa chọn câu hỏi theo YCCĐ của từng bài học, dạng câu hỏi và mức độ đánh giá; đồng thời xuất ma trận, bản đặc tả theo mẫu Công văn 7991.'],
-    ['→', 'Giải pháp: một nguồn dữ liệu cho cả ba tài liệu', 'Website liên kết câu hỏi với YCCĐ và mức độ đánh giá, hỗ trợ lập đồng bộ ma trận, bản đặc tả và đề kiểm tra theo Công văn 7991 cho nội dung học kì II môn Vật lí 10, bộ Kết nối tri thức với cuộc sống.'],
+    ['01', 'Yêu cầu đổi mới kiểm tra, đánh giá', 'Đánh giá căn cứ vào yêu cầu cần đạt (YCCĐ); đề kiểm tra định kì bằng điểm số dựa trên ma trận và bản đặc tả.'],
+    ['02', 'Quy trình thủ công dễ sai lệch', 'Thay câu hỏi cần đối chiếu, cập nhật các tài liệu liên quan; câu “Đúng – Sai” phải đối chiếu từng ý.'],
+    ['03', 'Nhu cầu liên kết câu hỏi với YCCĐ', 'Chọn câu theo YCCĐ, dạng và mức độ; xuất ma trận, bản đặc tả theo mẫu Công văn 7991.'],
+    ['→', 'Một nguồn dữ liệu cho ba tài liệu', 'Website hỗ trợ lập đồng bộ ma trận, bản đặc tả và đề kiểm tra học kì II Vật lí 10, bộ Kết nối tri thức với cuộc sống.'],
   ];
-  const cw = (W - 24) / 2, ch = (H - 24) / 2, els = [];
+  const rh = 112, gap = (H - 4 * rh) / 3, els = [];
   rows.forEach(([k, h, p], i) => {
-    const x = L + (i % 2) * (cw + 24), y = TOP + Math.floor(i / 2) * (ch + 24), dark = i === 3;
-    els.push(card(x, y, cw, ch, dark ? { fill: C.dark } : {}),
-      text(x + 28, y + 18, 64, 56, k, { size: 34, weight: 800, color: dark ? C.gold : C.amber, valign: 'middle', lh: 1.1 }),
-      text(x + 96, y + 18, cw - 120, 56, h, { size: 20, bold: true, color: dark ? C.white : C.text, valign: 'middle', lh: 1.3, align: 'left' }),
-      text(x + 28, y + 82, cw - 56, ch - 94, p, { size: 18, color: dark ? C.darkMuted : C.muted, lh: 1.5 }));
+    const y = TOP + i * (rh + gap), dark = i === 3;
+    els.push(card(L, y, W, rh, dark ? { fill: C.dark } : {}),
+      text(L + 30, y, 72, rh, k, { size: 36, weight: 800, color: dark ? C.gold : C.amber, valign: 'middle' }),
+      text(L + 112, y + 14, W - 144, 32, h, { size: 22, bold: true, color: dark ? C.white : C.text, align: 'left' }),
+      text(L + 112, y + 50, W - 144, 56, p, { size: 19, color: dark ? C.darkMuted : C.muted, lh: 1.4 }));
   });
   content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI', 'Vì sao cần một website hỗ trợ biên soạn đề?', els);
 }
