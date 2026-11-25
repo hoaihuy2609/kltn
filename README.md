@@ -8,11 +8,13 @@ Bộ slide trình chiếu, xem trực tuyến tại trang Vercel của repo này
 | `tai-ve/Bao_cao_de_cuong.pptx` | Sửa trong PowerPoint |
 | `tai-ve/Bao_cao_de_cuong.pdf` | Nộp hoặc in |
 
+**Ô “Trích nguyên văn”:** chạm (HTML) để phóng to đoạn văn bản gốc; trong PowerPoint, bấm để tới slide căn cứ pháp lí.
+
 **Điều khiển khi trình chiếu:** ← → (hoặc chạm nửa trái/phải, vuốt trên máy tính bảng) để chuyển slide · `F` toàn màn hình · `Ctrl+P` lưu PDF · thêm `#5` vào cuối đường dẫn để mở thẳng slide 5.
 
 ## Sửa nội dung
 
-Mọi chữ, số liệu và bố cục nằm trong `src/deck.cjs`. Sau khi sửa:
+Mọi chữ, số liệu và bố cục nằm trong `src/deck.cjs`. Ảnh trích Thông tư 22/2021 và Công văn 7991 (có tô đỏ) nằm ở `src/assets/trich/`, được cắt từ PDF gốc bằng `src/trich.py` (cần `pdfplumber`, `Pillow`, `pdftoppm`). Sau khi sửa:
 
 ```bash
 npm install

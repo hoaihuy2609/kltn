@@ -19,7 +19,9 @@ const badge = (x, y, n, o = {}) => [rect(x, y, 40, 40, { fill: o.fill || C.brown
   text(x, y, 40, 40, String(n), { size: o.size || 18, bold: true, color: o.color || C.white, align: 'center', valign: 'middle' })];
 
 const slides = [];
-const content = (kicker, title, els) => slides.push({ layout: 'content', kicker, title, els });
+const content = (kicker, title, els, id) => slides.push({ layout: 'content', kicker, title, els, id });
+// Ô trích dẫn văn bản: ảnh xem trước + nhãn; HTML chạm để phóng to, PowerPoint bấm để tới slide căn cứ.
+const cite = (x, y, w, h, src, label, target, o = {}) => ({ t: 'cite', x, y, w, h, src, label, target, ...o });
 
 // 1. Bìa
 slides.push({ layout: 'cover', els: [
@@ -39,17 +41,17 @@ slides.push({ layout: 'cover', els: [
 
 // 2. Nội dung trình bày
 {
-  const items = ['Tính cần thiết của đề tài', 'Tổng quan vấn đề nghiên cứu', 'Mục tiêu và câu hỏi nghiên cứu', 'Đối tượng và phạm vi nghiên cứu',
-    'Phương pháp nghiên cứu', 'Kết quả bước đầu', 'Cấu trúc khóa luận và đóng góp', 'Kế hoạch thực hiện'];
+  const items = ['Tính cần thiết của đề tài', 'Tổng quan vấn đề nghiên cứu', 'Mục tiêu nghiên cứu', 'Câu hỏi nghiên cứu', 'Đối tượng và phạm vi nghiên cứu',
+    'Phương pháp nghiên cứu', 'Kết quả bước đầu (giai đoạn 1)', 'Nội dung và cấu trúc dự kiến của khóa luận', 'Những đóng góp dự kiến của đề tài', 'Kế hoạch thực hiện'];
   const els = [];
-  const cw = (W - 32) / 2, ch = 102, gap = (H - 4 * ch) / 3;
+  const cw = (W - 32) / 2, gap = 14, ch = (H - 4 * gap) / 5;
   items.forEach((label, i) => {
-    const x = L + (i < 4 ? 0 : cw + 32), y = TOP + (i % 4) * (ch + gap);
-    els.push(card(x, y, cw, ch, i === 5 ? { fill: C.dark } : {}),
-      text(x + 28, y, 80, ch, String(i + 1).padStart(2, '0'), { size: 36, weight: 800, color: i === 5 ? C.gold : C.amber, valign: 'middle' }),
-      text(x + 112, y, cw - 140, ch, label, { size: 23, bold: true, color: i === 5 ? C.white : C.text, valign: 'middle' }));
+    const x = L + (i < 5 ? 0 : cw + 32), y = TOP + (i % 5) * (ch + gap), hl = i === 6;
+    els.push(card(x, y, cw, ch, hl ? { fill: C.dark } : {}),
+      text(x + 26, y, 70, ch, String(i + 1).padStart(2, '0'), { size: 30, weight: 800, color: hl ? C.gold : C.amber, valign: 'middle' }),
+      text(x + 96, y, cw - 120, ch, label, { size: 21, bold: true, color: hl ? C.white : C.text, valign: 'middle' }));
   });
-  content('NỘI DUNG TRÌNH BÀY', 'Báo cáo gồm tám phần', els);
+  content('NỘI DUNG TRÌNH BÀY', 'Báo cáo gồm mười phần, theo đề cương', els);
 }
 
 // 3. Tính cần thiết
@@ -60,15 +62,59 @@ slides.push({ layout: 'cover', els: [
     ['03', 'Công cụ hiện có chưa đáp ứng', 'Chủ yếu lưu câu hỏi, sinh đề ngẫu nhiên; ít gắn câu hỏi với YCCĐ, chưa xuất ma trận, bản đặc tả theo mẫu 7991.'],
     ['→', 'Giải pháp: một nguồn dữ liệu cho cả ba tài liệu', 'Website lập ma trận, bản đặc tả và đề theo Công văn 7991; mỗi câu hỏi gắn một dòng YCCĐ và một mức độ.'],
   ];
-  const rh = 106, gap = (H - 4 * rh) / 3, els = [];
+  const rh = 106, gap = (H - 4 * rh) / 3, els = [], rw = W - 316;
   rows.forEach(([k, h, p], i) => {
     const y = TOP + i * (rh + gap), dark = i === 3;
-    els.push(card(L, y, W, rh, dark ? { fill: C.dark } : {}),
-      text(L + 30, y, 70, rh, k, { size: 36, weight: 800, color: dark ? C.gold : C.amber, valign: 'middle' }),
-      text(L + 112, y + 20, W - 150, 32, h, { size: 23, bold: true, color: dark ? C.white : C.text }),
-      text(L + 112, y + 56, W - 150, 34, p, { size: 18, color: dark ? C.darkMuted : C.muted }));
+    els.push(card(L, y, rw, rh, dark ? { fill: C.dark } : {}),
+      text(L + 26, y, 70, rh, k, { size: 34, weight: 800, color: dark ? C.gold : C.amber, valign: 'middle' }),
+      text(L + 96, y + 14, rw - 120, 30, h, { size: 21, bold: true, color: dark ? C.white : C.text }),
+      text(L + 96, y + 46, rw - 120, 50, p, { size: 16, color: dark ? C.darkMuted : C.muted, lh: 1.4 }));
   });
-  content('01 — TÍNH CẦN THIẾT', 'Vì sao cần một website soạn đề?', els);
+  const cx = L + rw + 24, cwid = R - cx, chh = (H - 20) / 2;
+  els.push(cite(cx, TOP, cwid, chh, 'cv7991-noi-dung-nho', 'Công văn 7991: xây dựng ma trận, bản đặc tả, đề kiểm tra định kì', 'cv7991', { tall: true }),
+    cite(cx, TOP + chh + 20, cwid, chh, 'tt22-dieu7-nho', 'Thông tư 22/2021, Điều 7: đề kiểm tra dựa trên ma trận, đặc tả', 'tt22', { tall: true }));
+  content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI', 'Vì sao cần một website soạn đề?', els);
+}
+
+// 3b. Căn cứ pháp lí: Thông tư 22/2021
+function docCard(x, y, w, h, kicker, name, lines, points) {
+  const els = [card(x, y, w, h, { fill: C.dark }),
+    text(x + 26, y + 26, w - 52, 22, kicker, { size: 14, bold: true, color: C.gold, spacing: 1.5 }),
+    text(x + 26, y + 54, w - 52, 64, name, { size: 22, weight: 800, color: C.white, lh: 1.25 }),
+    text(x + 26, y + 124, w - 52, 120, lines, { size: 15, color: C.darkMuted, lh: 1.45 })];
+  points.forEach((t, i) => {
+    const py = y + 262 + i * 98;
+    els.push(circle(x + 28, py + 8, 10, C.gold), text(x + 50, py, w - 76, 90, t, { size: 16, bold: true, color: C.white, lh: 1.4 }));
+  });
+  return els;
+}
+function excerptCard(x, y, w, h, src, label, ratio) {
+  const ih = h - 58, iw = Math.min(w - 32, Math.round(ih * ratio));
+  return [card(x, y, w, h), text(x + 18, y + 14, w - 36, 24, label, { size: 15, bold: true, color: C.brown }),
+    img(x + 16, y + 44, iw, ih, src, { zoom: true, frame: true })];
+}
+{
+  const lw = 284, rx = L + lw + 24, rw = R - rx, ch = (H - 16) / 2;
+  content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI · CĂN CỨ PHÁP LÍ', 'Thông tư 22/2021/TT-BGDĐT', [
+    ...docCard(L, TOP, lw, H, 'THÔNG TƯ SỐ', '22/2021/TT-BGDĐT', 'Bộ Giáo dục và Đào tạo, ngày 20/7/2021. Quy định về đánh giá học sinh trung học cơ sở và học sinh trung học phổ thông.',
+      ['Đánh giá căn cứ vào yêu cầu cần đạt (Điều 4)', 'Đề kiểm tra định kì dựa trên ma trận, đặc tả (Điều 7)']),
+    ...excerptCard(rx, TOP, rw, ch, 'tt22-dieu3-4-nho', 'Điều 3. Mục đích đánh giá · Điều 4. Yêu cầu đánh giá (khoản 1)', 1467 / 385),
+    ...excerptCard(rx, TOP + ch + 16, rw, ch, 'tt22-dieu7-nho', 'Điều 7. Đánh giá định kì (khoản 1)', 1467 / 401),
+    { t: 'note', text: 'Trích nguyên văn · phần tô đỏ do người báo cáo đánh dấu' },
+  ], 'tt22');
+}
+
+// 3c. Căn cứ pháp lí: Công văn 7991
+{
+  const lw = 284, rx = L + lw + 24, rw = R - rx, h1 = 218, h2 = H - h1 - 16, bw = (rw - 16) / 2;
+  content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI · CĂN CỨ PHÁP LÍ', 'Công văn 7991/BGDĐT-GDTrH', [
+    ...docCard(L, TOP, lw, H, 'CÔNG VĂN SỐ', '7991/BGDĐT-GDTrH', 'Bộ Giáo dục và Đào tạo, ngày 17/12/2024. V/v thực hiện kiểm tra, đánh giá đối với cấp THCS, THPT.',
+      ['Xây dựng ma trận, bản đặc tả, đề kiểm tra định kì; áp dụng từ học kì 2 năm học 2024 – 2025', 'Phụ lục: mẫu ma trận và bản đặc tả']),
+    ...excerptCard(rx, TOP, rw, h1, 'cv7991-noi-dung-nho', 'Nội dung công văn', 1522 / 312),
+    ...excerptCard(rx, TOP + h1 + 16, bw, h2, 'cv7991-ma-tran-nho', 'Phụ lục 1: mẫu ma trận đề kiểm tra', 1323 / 834),
+    ...excerptCard(rx + bw + 16, TOP + h1 + 16, bw, h2, 'cv7991-dac-ta-nho', 'Phụ lục 2: mẫu bản đặc tả', 1489 / 700),
+    { t: 'note', text: 'Trích nguyên văn · phần tô đỏ do người báo cáo đánh dấu' },
+  ], 'cv7991');
 }
 
 // helper: thẻ có nhãn, tiêu đề, các ý
@@ -89,7 +135,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
 // 4. Tổng quan: YCCĐ, ma trận và bản đặc tả
 {
   const cw = (W - 32) / 2;
-  content('02 — TỔNG QUAN', 'Đánh giá theo YCCĐ và bản đặc tả', [
+  content('02 — TỔNG QUAN VẤN ĐỀ NGHIÊN CỨU · 2.1 – 2.2', 'Đánh giá theo YCCĐ và bản đặc tả', [
     ...pointCard(L, TOP, cw, H, '2.1', 'Kiểm tra, đánh giá theo YCCĐ', [
       ['Đánh giá trên lớp phát huy tác dụng khi gắn với mục tiêu học tập và cung cấp thông tin để điều chỉnh dạy học (Black & Wiliam, 1998).', 104],
       ['Chương trình 2018 cụ thể hóa mục tiêu thành YCCĐ; Thông tư 22/2021 quy định đánh giá căn cứ vào YCCĐ.', 78],
@@ -100,6 +146,8 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       ['Lập bảng đặc tả trước khi viết đề giúp tránh dồn câu vào một nội dung, một mức độ (Fives & DiDonato-Barnes, 2013).', 78],
       ['Mẫu Công văn 7991 tách ma trận và bản đặc tả; ví dụ minh họa phân bổ điểm Biết – Hiểu – Vận dụng: 40% – 30% – 30%.', 78],
     ]),
+    cite(L + 24, BOTTOM - 96, cw - 48, 76, 'tt22-dieu3-4-nho', 'Thông tư 22/2021, Điều 3 – 4: đánh giá căn cứ YCCĐ', 'tt22'),
+    cite(L + cw + 32 + 24, BOTTOM - 96, cw - 48, 76, 'cv7991-ma-tran-nho', 'Phụ lục Công văn 7991: mẫu ma trận, tỉ lệ 40 – 30 – 30', 'cv7991'),
   ]);
 }
 
@@ -115,21 +163,22 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
   ];
   cols.forEach(([name, rule, fill, fg], i) => {
     const x = L + i * (cw + 24), y = TOP + 50;
-    els.push(card(x, y, cw, 300), ...badge(x + 28, y + 28, i + 1, { fill, color: fg }),
-      text(x + 28, y + 86, cw - 56, 40, name, { size: 30, weight: 800 }),
-      text(x + 28, y + 136, cw - 56, 140, rule, { size: 19, color: C.muted, lh: 1.45 }));
+    els.push(card(x, y, cw, 222), ...badge(x + 28, y + 24, i + 1, { fill, color: fg }),
+      text(x + 28, y + 76, cw - 56, 40, name, { size: 30, weight: 800 }),
+      text(x + 28, y + 122, cw - 56, 90, rule, { size: 18, color: C.muted, lh: 1.4 }));
   });
+  els.push(cite(L, TOP + 288, W, 70, 'cv7991-ma-tran-nho', 'Phụ lục Công văn 7991: ma trận và bản đặc tả chia theo ba mức Biết – Hiểu – Vận dụng', 'cv7991'));
   els.push(card(L, TOP + 374, W, 114, { fill: C.dark }),
     text(L + 30, TOP + 374, 60, 114, '→', { size: 36, weight: 800, color: C.gold, valign: 'middle' }),
     text(L + 100, TOP + 394, W - 130, 32, 'Trả lời ngắn là bài tập tính toán nên luôn xếp mức Vận dụng', { size: 22, bold: true, color: C.white }),
     text(L + 100, TOP + 430, W - 130, 30, 'Câu “Đúng – Sai”: xếp mức riêng cho từng ý a, b, c, d · Quy tắc do giảng viên hướng dẫn thống nhất', { size: 17, color: C.darkMuted }));
-  content('02 — TỔNG QUAN', 'Quy tắc phân loại mức độ câu hỏi', els);
+  content('02 — TỔNG QUAN VẤN ĐỀ NGHIÊN CỨU · 2.3', 'Quy tắc phân loại mức độ câu hỏi', els);
 }
 
 // 6. Câu trắc nghiệm, công cụ và khoảng trống
 {
   const cw = (W - 32) / 2;
-  content('02 — TỔNG QUAN', 'Chất lượng câu hỏi, đánh giá công cụ', [
+  content('02 — TỔNG QUAN VẤN ĐỀ NGHIÊN CỨU · 2.4 – 2.5', 'Chất lượng câu hỏi, đánh giá công cụ', [
     ...pointCard(L, TOP, cw, 330, '2.4', 'Yêu cầu đối với câu trắc nghiệm', [
       ['Phương án nhiễu phải hợp lí; hạn chế “tất cả các phương án trên” (Haladyna, Downing, & Rodriguez, 2002).', 78],
       ['Áp dụng khi rà soát ngân hàng và khi trộn đề: phương án nhắc tới phương án khác được giữ nguyên thứ tự.', 78],
@@ -165,7 +214,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
     els.push(card(rx, y, rw, ih), ...badge(rx + 22, y + 22, i + 1),
       text(rx + 82, y, rw - 106, ih, t, { size: 18, color: C.text, valign: 'middle', lh: 1.4 }));
   });
-  content('03 — MỤC TIÊU', 'Mục tiêu nghiên cứu', els);
+  content('03 — MỤC TIÊU NGHIÊN CỨU', 'Mục tiêu tổng quát và mục tiêu cụ thể', els);
 }
 
 // 8. Câu hỏi nghiên cứu
@@ -182,7 +231,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       text(L + 130, y + 24, W - 170, 64, q, { size: 21, bold: true, lh: 1.4 }),
       text(L + 130, y + 98, W - 170, 28, a, { size: 17, color: C.brown, bold: true }));
   });
-  content('03 — CÂU HỎI NGHIÊN CỨU', 'Ba câu hỏi đề tài cần trả lời', els);
+  content('04 — CÂU HỎI NGHIÊN CỨU', 'Ba câu hỏi đề tài cần trả lời', els);
 }
 
 // 9. Đối tượng và phạm vi
@@ -214,7 +263,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
     els.push(card(x, fy, fw, H - 348), text(x + 22, fy + 18, fw - 44, 26, h, { size: 15, bold: true, color: C.amber, spacing: 1 }),
       text(x + 22, fy + 50, fw - 44, 76, p, { size: 17, color: C.text, lh: 1.4 }));
   });
-  content('04 — ĐỐI TƯỢNG VÀ PHẠM VI', 'Nghiên cứu cái gì, ở đâu, khi nào', els);
+  content('05 — ĐỐI TƯỢNG VÀ PHẠM VI NGHIÊN CỨU', 'Nghiên cứu cái gì, ở đâu, khi nào', els);
 }
 
 // 10. Phương pháp
@@ -236,7 +285,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       text(x + 24, y + 70, cw - 48, 32, h, { size: 22, bold: true, color: i === 3 ? C.white : C.text }),
       text(x + 24, y + 112, cw - 48, 100, p, { size: 17, color: i === 3 ? C.darkMuted : C.muted, lh: 1.45 }));
   });
-  content('05 — PHƯƠNG PHÁP', 'Sáu bước thực hiện đề tài', els);
+  content('06 — PHƯƠNG PHÁP NGHIÊN CỨU', 'Sáu bước thực hiện đề tài', els);
 }
 
 // 11. Bộ YCCĐ và AI
@@ -258,7 +307,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
     els.push(circle(rx + 32, y + 8, 12, C.gold), text(rx + 58, y, rw - 88, 30, h, { size: 20, bold: true, color: C.white }),
       text(rx + 58, y + 34, rw - 88, 84, p, { size: 17, color: C.darkMuted, lh: 1.45 }));
   });
-  content('05 — PHƯƠNG PHÁP', 'Bộ YCCĐ và việc sử dụng AI', els);
+  content('06 — PHƯƠNG PHÁP NGHIÊN CỨU · 6.2 – 6.3', 'Bộ YCCĐ và việc sử dụng AI', els);
 }
 
 // 12. Khảo sát và đánh giá
@@ -283,7 +332,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       text(rx + 118, y + 26, rw - 140, 30, h, { size: 19, bold: true, color: i === 0 ? C.white : C.text }),
       text(rx + 118, y + 60, rw - 140, 56, p, { size: 16, color: i === 0 ? C.darkMuted : C.muted, lh: 1.4 }));
   });
-  content('05 — PHƯƠNG PHÁP', 'Khảo sát, thử nghiệm và đánh giá', els);
+  content('06 — PHƯƠNG PHÁP NGHIÊN CỨU · 6.5 – 6.6', 'Khảo sát, thử nghiệm và đánh giá', els);
 }
 
 // 13. Website
@@ -301,7 +350,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
   els.push(img(sx, TOP, sw, sh, 'export', { radius: 14, shadow: true }),
     text(sx, TOP + sh + 14, sw, 24, 'Màn hình rà soát và xuất ma trận, bản đặc tả theo mẫu Công văn 7991', { size: 15, color: C.soft }),
     text(L, TOP + 452, lw, 36, 'kholuutru.vercel.app · không cần tài khoản', { size: 17, bold: true, color: C.brown, valign: 'middle' }));
-  content('06 — KẾT QUẢ BƯỚC ĐẦU', 'Website: bốn bước soạn đề', els);
+  content('07 — KẾT QUẢ BƯỚC ĐẦU (GIAI ĐOẠN 1)', 'Website: bốn bước soạn đề', els);
 }
 
 // 14. Ngân hàng câu theo bài
@@ -319,7 +368,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       rect(bx, y + 5, bw, 20, { fill: C.track, radius: 10 }), rect(bx, y + 5, bw * v / 125, 20, { fill: C.amber, radius: 10 }),
       text(R - 60, y, 60, 30, String(v), { size: 18, bold: true, color: C.muted, align: 'right', valign: 'middle' }));
   });
-  content('06 — KẾT QUẢ BƯỚC ĐẦU', 'Ngân hàng câu hỏi chủ đề Năng lượng', [...els,
+  content('07 — KẾT QUẢ BƯỚC ĐẦU (GIAI ĐOẠN 1)', 'Ngân hàng câu hỏi chủ đề Năng lượng', [...els,
     { t: 'note', text: 'Nguồn: Bảng 2 trong đề cương (số liệu ngày 22/11/2026; 2 câu chưa gắn YCCĐ không thuộc bài nào)' }]);
 }
 
@@ -336,7 +385,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
     text(rx + 28, TOP + 280, rw - 56, 24, 'ĐÃ GẮN YCCĐ', { size: 15, bold: true, color: C.amber, spacing: 1.5 }),
     text(rx + 28, TOP + 314, rw - 56, 160, '407/409 câu đã gắn YCCĐ; 2 câu có nội dung vượt yêu cầu chương trình nên không đưa vào đề.', { size: 20, color: C.text, lh: 1.45 }),
     text(L, TOP + 300, 700, 120, 'Mỗi câu “Đúng – Sai” gồm 4 ý, mức độ được xếp cho từng ý; 358/388 ý thuộc mức Hiểu và Vận dụng.', { size: 18, color: C.muted, lh: 1.45 }));
-  content('06 — KẾT QUẢ BƯỚC ĐẦU', 'Phân bố mức độ trong ngân hàng', [...els, { t: 'note', text: 'Nguồn: Bảng 3 trong đề cương' }]);
+  content('07 — KẾT QUẢ BƯỚC ĐẦU (GIAI ĐOẠN 1)', 'Phân bố mức độ trong ngân hàng', [...els, { t: 'note', text: 'Nguồn: Bảng 3 trong đề cương' }]);
 }
 
 // 16. Cấu trúc và đóng góp
@@ -357,7 +406,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
     const y = TOP + 76 + i * 132;
     els.push(...badge(rx + 30, y, i + 1, { fill: C.gold, color: C.dark }), text(rx + 88, y - 2, rw - 118, 116, t, { size: 18, color: C.white, lh: 1.45 }));
   });
-  content('07 — CẤU TRÚC VÀ ĐÓNG GÓP', 'Khóa luận dự kiến gồm năm chương', els);
+  content('08 — NỘI DUNG VÀ CẤU TRÚC DỰ KIẾN CỦA KHÓA LUẬN · 09 — NHỮNG ĐÓNG GÓP DỰ KIẾN', 'Khóa luận dự kiến gồm năm chương', els);
 }
 
 // 17. Kế hoạch
@@ -379,7 +428,7 @@ function pointCard(x, y, w, h, tag, title, points, o = {}) {
       text(L + 230, y, W - 360, rh, t, { size: 17, valign: 'middle' }),
       ...(done ? [text(R - 130, y, 110, rh, '✓ Đã làm', { size: 15, bold: true, color: C.green, align: 'right', valign: 'middle' })] : []));
   });
-  content('08 — KẾ HOẠCH', 'Kế hoạch thực hiện đề tài', els);
+  content('10 — KẾ HOẠCH THỰC HIỆN', 'Kế hoạch thực hiện đề tài', els);
 }
 
 // 18. Tài liệu tham khảo chính
@@ -416,4 +465,9 @@ slides.push({ layout: 'cover', els: [
   text(908, 584, 300, 30, 'Nguyễn Trần Hoài Huy', { size: 16, bold: true, color: C.faint, align: 'right' }),
 ] });
 
+const ids = Object.fromEntries(slides.map((sl, i) => [sl.id, i + 1]).filter(([id]) => id));
+for (const sl of slides) for (const e of sl.els) if (e.t === 'cite') {
+  if (!ids[e.target]) throw new Error('Không có slide căn cứ: ' + e.target);
+  e.slide = ids[e.target];
+}
 module.exports = { slides, C, FOOTER: 'Báo cáo đề cương khóa luận · Nguyễn Trần Hoài Huy' };

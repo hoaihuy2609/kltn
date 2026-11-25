@@ -4,6 +4,14 @@ const pptxgen = require('pptxgenjs');
 const { slides, C, FOOTER } = require('./deck.cjs');
 const d = __dirname;
 const IMG = { truong: 'assets/truong.png', khoa: 'assets/khoa.png', web: 'assets/web-matrix.png', export: 'assets/web-export.png' };
+const fs = require('fs');
+const imgPath = k => path.join(d, IMG[k] || `assets/trich/${k}.png`);
+const imgSize = k => { const b = fs.readFileSync(imgPath(k)); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
+// Ảnh vừa khít bề ngang khung, cắt phần dưới nếu thừa (giống object-fit theo chiều ngang ở bản HTML).
+function fitWidth(src, x, y, w, h) {
+  const n = imgSize(src), fullH = w * n.h / n.w;
+  return fullH <= h + 0.5 ? { x: I(x), y: I(y), w: I(w), h: I(fullH) } : { x: I(x), y: I(y), w: I(w), h: I(fullH), sizing: { type: 'crop', x: 0, y: 0, w: I(w), h: I(h) } };
+}
 const FONT = 'Arial';
 const I = px => px / 96;          // khung 1280 × 720 px = 13,333 × 7,5 inch
 const PT = px => Math.round(px * 0.75 * 10) / 10;
@@ -37,7 +45,8 @@ function add(slide, e) {
   } else if (e.t === 'ellipse') {
     slide.addShape(pres.shapes.OVAL, { ...box, fill: { color: e.fill }, line: { type: 'none' } });
   } else if (e.t === 'img') {
-    const o = { ...box, path: path.join(d, IMG[e.src]) };
+    const o = { ...box, path: imgPath(e.src) };
+    if (e.frame) slide.addShape(pres.shapes.RECTANGLE, { ...box, fill: { color: C.white }, line: { color: C.line, width: 0.75 } });
     if (e.round) o.rounding = true;
     if (e.src === 'export' || e.src === 'web') o.sizing = { type: 'crop', w: I(e.w), h: I(e.h) };
     if (e.shadow) {
@@ -52,6 +61,17 @@ function add(slide, e) {
       charSpacing: e.spacing || undefined, fit: 'none', wrap: true,
       ...(e.hang ? { indent: 0, paraSpaceBefore: 0 } : {}),
     });
+  } else if (e.t === 'cite') {
+    const tall = e.tall, ih = tall ? e.h - 108 : e.h - 16, iw = tall ? e.w - 16 : Math.round(e.w * 0.36);
+    const link = { slide: e.slide, tooltip: 'Tới slide trích dẫn' };
+    slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { ...box, rectRadius: I(14), fill: { color: C.white }, line: { color: 'FCA5A5', width: 1.25 },
+      shadow: { type: 'outer', color: '1C1917', opacity: 0.08, blur: 10, offset: 3, angle: 90 } });
+    slide.addImage({ path: imgPath(e.src), ...fitWidth(e.src, e.x + 8, e.y + 8, iw, ih), hyperlink: link });
+    const lx = tall ? e.x + 14 : e.x + iw + 22, ly = tall ? e.y + ih + 18 : e.y + 8, lw = tall ? e.w - 28 : e.w - iw - 36, lh = tall ? e.h - ih - 28 : e.h - 16;
+    slide.addText([
+      { text: 'TRÍCH NGUYÊN VĂN · bấm để xem', options: { fontSize: PT(11), bold: true, color: 'DC2626', charSpacing: 0.6, breakLine: true, hyperlink: link } },
+      { text: e.label, options: { fontSize: PT(15), bold: true, color: C.text, hyperlink: link } },
+    ], { x: I(lx), y: I(ly), w: I(lw), h: I(lh), isTextBox: true, margin: 0, fontFace: FONT, valign: 'middle', lineSpacingMultiple: 1.15, fit: 'none' });
   } else if (e.t === 'table') {
     const rows = e.rows.map((r, i) => r.map((c, j) => ({ text: c, options: {
       bold: i === 0 || j === 0, color: i === 0 ? C.white : C.text, fill: { color: i === 0 ? C.dark : C.white },
