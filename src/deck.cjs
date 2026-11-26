@@ -83,7 +83,7 @@ slides.push({ layout: 'cover', id: 'bia', els: [
     'Phụ lục: 3 dạng × 3 mức; ví dụ tỉ lệ Biết – Hiểu – Vận dụng 40 – 30 – 30.'],
     [['cv7991-ma-tran-nho', 834 / 1323]]);
   content('01 — TÍNH CẦN THIẾT CỦA ĐỀ TÀI · CĂN CỨ PHÁP LÍ', 'Thông tư 22/2021 và Công văn 7991', [...els,
-    { t: 'note', text: 'Trích nguyên văn [2], [3] · Phần tô đỏ do người báo cáo đánh dấu · Chạm vào ảnh để phóng to' }]);
+    { t: 'note', text: 'Trích nguyên văn [2], [3] · Phần tô đỏ do người báo cáo đánh dấu' }]);
 }
 
 // 4. Tổng quan

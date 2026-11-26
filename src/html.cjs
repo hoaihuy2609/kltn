@@ -122,7 +122,7 @@ body{font-family:'Be Vietnam Pro',Arial,sans-serif;-webkit-font-smoothing:antial
 #lb img{max-width:100%;max-height:86vh;background:#fff;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 #lb p{color:#e7e5e4;font:600 14px 'Be Vietnam Pro',sans-serif}
 .hud{position:fixed;right:12px;bottom:12px;display:flex;gap:6px;align-items:center;font:600 13px 'Be Vietnam Pro',sans-serif;opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
-body.mv .hud{opacity:1;pointer-events:auto}
+.hud{display:none!important}
 .hud span{color:#d6d3d1;background:rgba(28,25,23,.78);padding:7px 11px;border-radius:9px}
 .hud button{font:inherit;color:#fafaf9;background:rgba(28,25,23,.78);border:1px solid rgba(255,255,255,.14);padding:7px 11px;border-radius:9px;cursor:pointer}
 .hud button:hover{background:#${C.brown}}

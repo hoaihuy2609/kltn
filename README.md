@@ -12,7 +12,7 @@ Bộ slide trình chiếu, xem trực tuyến tại trang Vercel của repo này
 
 **Hiệu ứng:** bản HTML có hiệu ứng nhẹ (nội dung trượt lên lần lượt, thanh số liệu chạy ra, thanh tiến độ ở đáy); tự tắt nếu máy bật chế độ giảm chuyển động. Bản PowerPoint có hiệu ứng chuyển slide mờ dần (Fade).
 
-**Ghi chú người nói (viết theo đề cương):** phím `N` mở khung ghi chú ở cuối màn hình (để tập dượt); phím `P` mở *cửa sổ người nói* riêng (ghi chú + đồng hồ + nút chuyển slide) — kéo cửa sổ này sang màn hình laptop, cửa sổ chính để trên máy chiếu. Trong PowerPoint, ghi chú nằm ở mục Notes (xem bằng Presenter View). Nội dung ghi chú sửa trong `src/notes.cjs`.
+**Ghi chú người nói (viết theo đề cương):** phím `N` mở khung ghi chú (trên màn hình không có nút bấm, chỉ dùng phím) ở cuối màn hình (để tập dượt); phím `P` mở *cửa sổ người nói* riêng (ghi chú + đồng hồ + nút chuyển slide) — kéo cửa sổ này sang màn hình laptop, cửa sổ chính để trên máy chiếu. Trong PowerPoint, ghi chú nằm ở mục Notes (xem bằng Presenter View). Nội dung ghi chú sửa trong `src/notes.cjs`.
 
 **Điều khiển khi trình chiếu:** ← → (hoặc chạm nửa trái/phải, vuốt trên máy tính bảng) để chuyển slide · `F` toàn màn hình · `Ctrl+P` lưu PDF · thêm `#5` vào cuối đường dẫn để mở thẳng slide 5.
 
